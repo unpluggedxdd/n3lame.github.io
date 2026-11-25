@@ -3,142 +3,683 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>n3lame — official</title>
+  <title>n3lame — mastermind // official</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #050507;
+      --card: rgba(14, 14, 19, 0.72);
+      --border: rgba(255, 255, 255, 0.09);
+      --accent: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.35);
+      --text: #f5f5f7;
+      --muted: #7a7a8c;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: #070709;
-      color: #f4f4f6;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
       min-height: 100vh;
+      overflow-x: hidden;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 24px;
-      background-image: radial-gradient(circle at 50% 0%, #1a1026 0%, #070709 65%);
+      padding: 48px 16px 36px;
+      position: relative;
     }
-    .card {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(18, 18, 24, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 28px 22px;
-      text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(12px);
+
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
     }
-    .cover {
-      width: 150px;
-      height: 150px;
-      border-radius: 14px;
-      object-fit: cover;
-      margin: 0 auto 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(95px);
+      opacity: 0.45;
+      animation: float 14s infinite alternate ease-in-out;
     }
-    h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: lowercase;
-      margin-bottom: 4px;
+    .orb-1 {
+      width: 380px; height: 380px;
+      background: #4c1d95;
+      top: -10%; left: 15%;
     }
-    .sub {
-      font-size: 13px;
-      color: #8e8e9e;
-      margin-bottom: 22px;
+    .orb-2 {
+      width: 320px; height: 320px;
+      background: #701a75;
+      bottom: -8%; right: 12%;
+      animation-delay: -5s;
     }
-    .badge {
-      display: inline-block;
-      font-size: 11px;
-      letter-spacing: 1px;
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 30px) scale(1.15); }
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://w3.org id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    .marquee-wrap {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 10;
+      background: rgba(10, 10, 14, 0.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 6px 0;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
       text-transform: uppercase;
-      color: #c4a7ff;
-      background: rgba(196, 167, 255, 0.12);
-      border: 1px solid rgba(196, 167, 255, 0.25);
+    }
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-track span { color: var(--accent); margin: 0 10px; }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .scene {
+      perspective: 1000px;
+      width: 100%;
+      max-width: 440px;
+      z-index: 5;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px 22px 24px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out;
+      overflow: hidden;
+    }
+
+    .card-glow {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .card:hover .card-glow { opacity: 1; }
+
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .live-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #c084fc;
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.25);
       padding: 4px 10px;
       border-radius: 999px;
-      margin-bottom: 14px;
+      font-weight: 600;
     }
+    .live-dot::before {
+      content: "";
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #c084fc;
+      box-shadow: 0 0 8px #c084fc;
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+    .cover-box {
+      position: relative;
+      width: 168px;
+      height: 168px;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.75);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .cover-box:hover {
+      transform: scale(1.03);
+      box-shadow: 0 20px 45px var(--accent-glow);
+    }
+    .cover-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 5, 7, 0.45);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .cover-box:hover .cover-overlay,
+    .cover-box.playing .cover-overlay {
+      opacity: 1;
+    }
+    .play-circle {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #fff;
+    }
+    .cover-hint {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #e9d5ff;
+    }
+
+    .eq-bars {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 3px;
+      height: 14px;
+      margin-bottom: 8px;
+    }
+    .eq-bars span {
+      width: 3px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: height 0.15s ease;
+    }
+    .playing-active .eq-bars span {
+      animation: eq 0.6s infinite alternate ease-in-out;
+    }
+    .playing-active .eq-bars span:nth-child(2) { animation-delay: 0.15s; }
+    .playing-active .eq-bars span:nth-child(3) { animation-delay: 0.3s; }
+    .playing-active .eq-bars span:nth-child(4) { animation-delay: 0.1s; }
+    .playing-active .eq-bars span:nth-child(5) { animation-delay: 0.25s; }
+    @keyframes eq {
+      0% { height: 4px; }
+      100% { height: 14px; }
+    }
+
+    .title-wrap { text-align: center; margin-bottom: 18px; }
+    h1.glitch {
+      font-family: 'Syne', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: lowercase;
+      position: relative;
+      display: inline-block;
+      color: #fff;
+    }
+    h1.glitch:hover::before,
+    h1.glitch:hover::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+    h1.glitch:hover::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff0055;
+      clip-path: inset(20% 0 40% 0);
+      animation: glitch-anim 0.3s infinite linear alternate-reverse;
+    }
+    h1.glitch:hover::after {
+      left: -2px;
+      text-shadow: 2px 0 #00f0ff;
+      clip-path: inset(55% 0 15% 0);
+      animation: glitch-anim 0.25s infinite linear alternate;
+    }
+    @keyframes glitch-anim {
+      0% { clip-path: inset(10% 0 60% 0); }
+      100% { clip-path: inset(50% 0 10% 0); }
+    }
+    .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
     .links {
       display: flex;
       flex-direction: column;
+      gap: 9px;
+    }
+    a.platform-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--border);
+      padding: 13px 16px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    a.platform-btn:hover {
+      background: rgba(168, 85, 247, 0.12);
+      border-color: rgba(168, 85, 247, 0.45);
+      transform: translateX(4px);
+    }
+    .btn-left {
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
-    a.btn {
-      display: block;
-      text-decoration: none;
-      color: #fff;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      padding: 13px 16px;
+    .btn-tag {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    a.platform-btn:hover .btn-tag { color: #d8b4fe; }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-top: 12px;
+    }
+    .mini-btn {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      color: #d4d4dc;
+      padding: 10px;
       border-radius: 12px;
-      font-size: 14px;
+      font-family: inherit;
+      font-size: 11px;
       font-weight: 600;
-      transition: 0.2s ease;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      text-decoration: none;
     }
-    a.btn:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-1px);
-    }
-    .divider {
-      height: 1px;
+    .mini-btn:hover {
       background: rgba(255, 255, 255, 0.08);
-      margin: 18px 0;
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
     }
+
     .socials {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 12px;
-      font-size: 13px;
+      gap: 8px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
     }
-    .socials a {
-      color: #a0a0b2;
+    .soc-pill {
+      font-size: 11px;
+      color: #a1a1b5;
       text-decoration: none;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       transition: 0.2s;
     }
-    .socials a:hover { color: #fff; }
-    .contact {
-      margin-top: 18px;
-      font-size: 12px;
-      color: #6b6b7b;
+    .soc-pill:hover {
+      color: #fff;
+      border-color: rgba(168, 85, 247, 0.5);
+      background: rgba(168, 85, 247, 0.12);
     }
-    .contact a { color: #9a9ab0; text-decoration: none; }
+
+    .footer-contact {
+      margin-top: 16px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .footer-contact a, .copy-mail {
+      color: #b4b4c7;
+      text-decoration: none;
+      cursor: pointer;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+      transition: 0.2s;
+    }
+    .footer-contact a:hover, .copy-mail:hover { color: #fff; border-color: #fff; }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #181822;
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 12px;
+      z-index: 50;
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      z-index: 40;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: #0e0e14;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      max-width: 400px;
+      width: 100%;
+      padding: 22px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: #fff; }
+    .modal-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: #e9d5ff;
+    }
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .track-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .track-item:hover { border-color: var(--accent); }
+    .track-item span { color: var(--muted); font-size: 10px; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="cover.png" alt="n3lame — mastermind" class="cover" />
-    <div class="badge">new release · mastermind</div>
-    <h1>n3lame</h1>
-    <div class="sub">artist / producer</div>
 
-    <div class="links">
-      <a class="btn" href="https://yandex.ru" target="_blank">Яндекс Музыка</a>
-      <a class="btn" href="https://vk.ru" target="_blank">VK Музыка</a>
-      <a class="btn" href="https://spotify.com" target="_blank">Spotify</a>
-      <a class="btn" href="https://youtube.com" target="_blank">YouTube / YouTube Music</a>
-      <a class="btn" href="https://soundcloud.com" target="_blank">SoundCloud</a>
-    </div>
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+  <div class="noise"></div>
 
-    <div class="divider"></div>
-
-    <div class="socials">
-      <a href="https://t.me" target="_blank">Telegram</a>
-      <span>·</span>
-      <a href="https://vk.ru" target="_blank">VK Паблик</a>
-      <span>·</span>
-      <a href="https://tiktok.com" target="_blank">TikTok</a>
-      <span>·</span>
-      <a href="https://genius.com" target="_blank">Genius</a>
-    </div>
-
-    <div class="contact">
-      DM: <a href="https://t.mee" target="_blank">@n3lamee</a> · <a href="mailto:n3lame@gmail.com">n3lame@gmail.com</a>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      N3LAME <span>//</span> MASTERMIND OUT NOW <span>//</span> ARTIST & PRODUCER <span>//</span> BROKENBOYZCLUB <span>//</span> N3LAME.RU <span>//</span>
+      N3LAME <span>//</span> MASTERMIND OUT NOW <span>//</span> ARTIST & PRODUCER <span>//</span> BROKENBOYZCLUB <span>//</span> N3LAME.RU <span>//</span>
     </div>
   </div>
+
+  <div class="scene">
+    <div class="card" id="tiltCard">
+      <div class="card-glow" id="cardGlow"></div>
+
+      <div class="top-meta">
+        <span class="live-dot">SINGLE · MASTERMIND</span>
+        <span id="clock">00:00</span>
+      </div>
+
+      <div class="cover-box" id="coverBox" title="Нажми для dark ambient вайба">
+        <img src="cover.png" alt="n3lame — mastermind" />
+        <div class="cover-overlay">
+          <div class="play-circle" id="playIcon">▶</div>
+          <div class="cover-hint" id="playHint">dark vibe</div>
+        </div>
+      </div>
+
+      <div class="eq-bars" id="eqBars">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="title-wrap">
+        <h1 class="glitch" data-text="n3lame">n3lame</h1>
+        <div class="subtitle">artist / sound producer</div>
+      </div>
+
+      <div class="links">
+        <a class="platform-btn" href="https://yandex.ru" target="_blank">
+          <span class="btn-left">Яндекс Музыка</span>
+          <span class="btn-tag">listen ↗</span>
+        </a>
+        <a class="platform-btn" href="https://vk.ru" target="_blank">
+          <span class="btn-left">VK Музыка</span>
+          <span class="btn-tag">listen ↗</span>
+        </a>
+        <a class="platform-btn" href="https://spotify.com" target="_blank">
+          <span class="btn-left">Spotify</span>
+          <span class="btn-tag">stream ↗</span>
+        </a>
+        <a class="platform-btn" href="https://youtube.com" target="_blank">
+          <span class="btn-left">YouTube / YT Music</span>
+          <span class="btn-tag">watch ↗</span>
+        </a>
+        <a class="platform-btn" href="https://soundcloud.com" target="_blank">
+          <span class="btn-left">SoundCloud</span>
+          <span class="btn-tag">archive ↗</span>
+        </a>
+      </div>
+
+      <div class="action-row">
+        <button class="mini-btn" id="openCatalogBtn">[ дискография ]</button>
+        <a class="mini-btn" href="https://genius.com" target="_blank">[ текст mastermind ]</a>
+      </div>
+
+      <div class="socials">
+        <a class="soc-pill" href="https://t.me" target="_blank">Telegram</a>
+        <a class="soc-pill" href="https://vk.ru" target="_blank">VK Паблик</a>
+        <a class="soc-pill" href="https://tiktok.com" target="_blank">TikTok</a>
+        <a class="soc-pill" href="https://genius.com" target="_blank">Genius</a>
+      </div>
+
+      <div class="footer-contact">
+        <span>DM: <a href="https://t.mee" target="_blank">@n3lamee</a></span>
+        <span>·</span>
+        <span class="copy-mail" id="copyMail" title="Нажми, чтобы скопировать">n3lame@gmail.com</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="catalogModal">
+    <div class="modal-box">
+      <button class="modal-close" id="closeCatalogBtn">✕</button>
+      <div class="modal-title">// релизы n3lame</div>
+      <div class="track-list">
+        <a class="track-item" href="https://yandex.ru" target="_blank">
+          <div><strong>mastermind</strong> <br><span>2026 · official single</span></div>
+          <span>OUT NOW ↗</span>
+        </a>
+        <a class="track-item" href="https://soundcloud.com" target="_blank">
+          <div><strong>быстрее факай</strong> <br><span>soundcloud exclusive</span></div>
+          <span>PLAY ↗</span>
+        </a>
+        <a class="track-item" href="https://soundcloud.com" target="_blank">
+          <div><strong>темный замок</strong> <br><span>soundcloud exclusive</span></div>
+          <span>PLAY ↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Почта скопирована в буфер</div>
+
+  <script>
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    const card = document.getElementById('tiltCard');
+    const glow = document.getElementById('cardGlow');
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      glow.style.left = `${x}px`;
+      glow.style.top = `${y}px`;
+      const rotateX = ((y / rect.height) - 0.5) * -8;
+      const rotateY = ((x / rect.width) - 0.5) * 8;
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    });
+
+    const copyMail = document.getElementById('copyMail');
+    const toast = document.getElementById('toast');
+    copyMail.addEventListener('click', () => {
+      navigator.clipboard.writeText('n3lame@gmail.com');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    });
+
+    const modal = document.getElementById('catalogModal');
+    document.getElementById('openCatalogBtn').onclick = () => modal.classList.add('open');
+    document.getElementById('closeCatalogBtn').onclick = () => modal.classList.remove('open');
+    modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('open'); };
+
+    let audioCtx = null;
+    let isPlaying = false;
+    let intervalId = null;
+    const coverBox = document.getElementById('coverBox');
+    const playIcon = document.getElementById('playIcon');
+    const playHint = document.getElementById('playHint');
+
+    function playDarkNote(freq) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filter = audioCtx.createBiquadFilter();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(320, audioCtx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(90, audioCtx.currentTime + 0.7);
+
+      gain.gain.setValueAtTime(0.14, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.75);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.78);
+    }
+
+    coverBox.addEventListener('click', () => {
+      if (!isPlaying) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const notes = [55.0, 55.0, 65.41, 49.0];
+        let step = 0;
+        playDarkNote(notes[step % notes.length]);
+        intervalId = setInterval(() => {
+          step++;
+          playDarkNote(notes[step % notes.length]);
+        }, 750);
+
+        isPlaying = true;
+        coverBox.classList.add('playing');
+        document.body.classList.add('playing-active');
+        playIcon.textContent = '❚❚';
+        playHint.textContent = 'playing';
+      } else {
+        clearInterval(intervalId);
+        isPlaying = false;
+        coverBox.classList.remove('playing');
+        document.body.classList.remove('playing-active');
+        playIcon.textContent = '▶';
+        playHint.textContent = 'dark vibe';
+      }
+    });
+  </script>
 </body>
 </html>
