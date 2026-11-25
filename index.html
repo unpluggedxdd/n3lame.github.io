@@ -3,358 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>n3lame</title>
-
-  <link rel="icon" type="image/png" href="cover.png" />
-  <link rel="apple-touch-icon" href="cover.png" />
-
-  <meta property="og:title" content="n3lame" />
-  <meta property="og:description" content="artist · sound producer — слушать на всех площадках" />
-  <meta property="og:image" content="https://n3lame.ru" />
+  <title>n3lame — официальный сайт</title>
+  <link id="favicon" rel="icon" type="image/png" href="cover.png?v=5" />
+  <link rel="shortcut icon" type="image/png" href="cover.png?v=5" />
+  <link rel="apple-touch-icon" href="cover.png?v=5" />
+  <meta property="og:title" content="n3lame — официальный сайт" />
+  <meta property="og:description" content="Слушать на всех площадках и соцсети артиста n3lame" />
+  <meta property="og:image" content="https://n3lame.ru/cover.png" />
   <meta property="og:url" content="https://n3lame.ru" />
-  <meta property="og:type" content="website" />
-
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      background: #09090b;
-      color: #f4f4f5;
-      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 32px 16px;
+      background: #09090b; color: #f4f4f5; font-family: 'Manrope', sans-serif;
+      min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 28px 16px;
       background-image: radial-gradient(circle at 50% -10%, rgba(120, 119, 198, 0.14), transparent 55%);
     }
-
-    .container {
-      width: 100%;
-      max-width: 440px;
-      background: #111114;
-      border: 1px solid #222228;
-      border-radius: 22px;
-      padding: 28px 22px 24px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+    .box {
+      width: 100%; max-width: 440px; background: #111114; border: 1px solid #222228;
+      border-radius: 22px; padding: 28px 22px 22px; box-shadow: 0 24px 60px rgba(0,0,0,0.65);
     }
-
-    .profile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      margin-bottom: 22px;
+    .head { display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 22px; }
+    .ava { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 2px solid #2a2a32; margin-bottom: 12px; }
+    .name { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .name h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: #fff; }
+    .ver {
+      width: 18px; height: 18px; background: #e4e4e7; color: #09090b; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800;
     }
-
-    .avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #2a2a32;
-      margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    .bio { font-size: 13px; color: #8e8e98; font-weight: 500; }
+    .rel {
+      display: flex; align-items: center; justify-content: space-between; background: #18181d;
+      border: 1px solid #2a2a33; border-radius: 14px; padding: 12px 14px; margin-bottom: 20px;
+      text-decoration: none; color: inherit; transition: 0.2s;
     }
-
-    .name-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 4px;
+    .rel:hover { background: #1e1e24; border-color: #464655; transform: translateY(-1px); }
+    .rel-l { display: flex; align-items: center; gap: 12px; }
+    .rel-img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid #2e2e36; }
+    .rel-tag { font-size: 11px; font-weight: 700; text-transform: uppercase; color: #a1a1aa; margin-bottom: 2px; }
+    .rel-name { font-size: 15px; font-weight: 700; color: #fff; }
+    .rel-btn { font-size: 12px; font-weight: 700; background: #fff; color: #09090b; padding: 7px 12px; border-radius: 999px; }
+    .lbl { font-size: 12px; font-weight: 700; color: #71717a; margin-bottom: 10px; padding-left: 2px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 20px; }
+    .btn {
+      display: flex; align-items: center; justify-content: space-between; background: #17171c;
+      border: 1px solid #25252d; border-radius: 12px; padding: 12px 13px; text-decoration: none;
+      color: #f4f4f5; font-size: 13px; font-weight: 600; transition: 0.18s;
     }
-
-    .name-row h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #ffffff;
+    .btn:hover { background: #202027; border-color: #3f3f4c; transform: translateY(-1px); }
+    .btn-l { display: flex; align-items: center; gap: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .arr { color: #52525b; font-size: 12px; }
+    .btn:hover .arr { color: #d4d4d8; }
+    .soc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+    .soc a {
+      display: flex; align-items: center; justify-content: center; background: #17171c;
+      border: 1px solid #25252d; border-radius: 12px; padding: 11px 8px; text-decoration: none;
+      color: #e4e4e7; font-size: 13px; font-weight: 600; transition: 0.18s;
     }
-
-    .verified {
-      width: 18px;
-      height: 18px;
-      background: #e4e4e7;
-      color: #09090b;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 800;
+    .soc a:hover { background: #22222a; border-color: #454552; color: #fff; }
+    .foot {
+      border-top: 1px solid #1f1f26; padding-top: 15px; display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12px; color: #71717a;
     }
-
-    .bio {
-      font-size: 13px;
-      color: #8e8e98;
-      font-weight: 500;
-    }
-
-    .release-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #18181d;
-      border: 1px solid #2a2a33;
-      border-radius: 14px;
-      padding: 12px 14px;
-      margin-bottom: 22px;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
-    }
-
-    .release-card:hover {
-      background: #1e1e24;
-      border-color: #464655;
-      transform: translateY(-1px);
-    }
-
-    .release-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .release-thumb {
-      width: 44px;
-      height: 44px;
-      border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid #2e2e36;
-    }
-
-    .release-info .tag {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #a1a1aa;
-      margin-bottom: 2px;
-    }
-
-    .release-info .track {
-      font-size: 15px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .release-cta {
-      font-size: 12px;
-      font-weight: 700;
-      background: #ffffff;
-      color: #09090b;
-      padding: 7px 12px;
-      border-radius: 999px;
-    }
-
-    .section-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #71717a;
-      margin-bottom: 10px;
-      padding-left: 2px;
-    }
-
-    .platforms-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      margin-bottom: 22px;
-    }
-
-    .plat-btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #17171c;
-      border: 1px solid #25252d;
-      border-radius: 12px;
-      padding: 12px 13px;
-      text-decoration: none;
-      color: #f4f4f5;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.18s ease;
-    }
-
-    .plat-btn:hover {
-      background: #202027;
-      border-color: #3f3f4c;
-      transform: translateY(-1px);
-    }
-
-    .plat-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .dot-ym { background: #ffcc00; }
-    .dot-sc { background: #ff5500; }
-    .dot-vk { background: #0077ff; }
-    .dot-sp { background: #1ed760; }
-    .dot-yt { background: #ff0033; }
-    .dot-gn { background: #ffff64; }
-
-    .arrow {
-      color: #52525b;
-      font-size: 12px;
-      transition: color 0.18s;
-    }
-    .plat-btn:hover .arrow { color: #d4d4d8; }
-
-    .socials-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 22px;
-    }
-
-    .soc-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      background: #17171c;
-      border: 1px solid #25252d;
-      border-radius: 12px;
-      padding: 11px 8px;
-      text-decoration: none;
-      color: #e4e4e7;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.18s ease;
-    }
-
-    .soc-btn:hover {
-      background: #22222a;
-      border-color: #454552;
-      color: #ffffff;
-    }
-
-    .contacts {
-      border-top: 1px solid #1f1f26;
-      padding-top: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      font-size: 12px;
-      color: #71717a;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .contacts a, .copy-email {
-      color: #d4d4d8;
-      text-decoration: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: color 0.15s;
-    }
-
-    .contacts a:hover, .copy-email:hover {
-      color: #ffffff;
-    }
-
-    @media (max-width: 380px) {
-      .platforms-grid { grid-template-columns: 1fr; }
-      .socials-row { grid-template-columns: 1fr; }
-    }
+    .foot a, .mail { color: #d4d4d8; text-decoration: none; font-weight: 600; cursor: pointer; }
+    .foot a:hover, .mail:hover { color: #fff; text-decoration: underline; }
+    @media (max-width: 380px) { .grid, .soc { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="profile">
-      <img src="cover.png" alt="n3lame" class="avatar" />
-      <div class="name-row">
-        <h1>n3lame</h1>
-        <span class="verified" title="Official Artist">✓</span>
-      </div>
+  <div class="box">
+    <div class="head">
+      <img src="cover.png" alt="n3lame" class="ava" />
+      <div class="name"><h1>n3lame</h1><span class="ver">✓</span></div>
       <div class="bio">artist · sound producer</div>
     </div>
 
-    <a class="release-card" href="https://yandex.ru" target="_blank" rel="noopener">
-      <div class="release-left">
-        <img src="cover.png" alt="mastermind" class="release-thumb" />
-        <div class="release-info">
-          <div class="tag">Новый трек</div>
-          <div class="track">mastermind</div>
-        </div>
+    <a class="rel" href="https://music.yandex.ru/artist/27001615" target="_blank" rel="noopener">
+      <div class="rel-l">
+        <img src="cover.png" alt="mastermind" class="rel-img" />
+        <div><div class="rel-tag">Новый трек</div><div class="rel-name">mastermind</div></div>
       </div>
-      <div class="release-cta">Слушать</div>
+      <div class="rel-btn">Слушать</div>
     </a>
 
-    <div class="section-title">Слушать на всех площадках:</div>
-    <div class="platforms-grid">
-      <a class="plat-btn" href="https://yandex.ru" target="_blank" rel="noopener">
-        <span class="plat-left"><span class="dot dot-ym"></span>Yandex Music</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="plat-btn" href="https://soundcloud.com" target="_blank" rel="noopener">
-        <span class="plat-left"><span class="dot dot-sc"></span>SoundCloud</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="plat-btn" href="https://vk.ru" target="_blank" rel="noopener">
-        <span class="plat-left"><span class="dot dot-vk"></span>VK Music</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="plat-btn" href="https://spotify.com" target="_blank" rel="noopener">
-        <span class="plat-left"><span class="dot dot-sp"></span>Spotify</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="plat-btn" href="https://youtube.com" target="_blank" rel="noopener">
-        <span class="plat-left"><span class="dot dot-yt"></span>YouTube Music</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="plat-btn" href="https://genius.com" target="_blank" rel="noopener">
-        <span class="plat-left"><span class="dot dot-gn"></span>Genius</span>
-        <span class="arrow">↗</span>
-      </a>
+    <div class="lbl">Слушать меня на всех площадках:</div>
+    <div class="grid">
+      <a class="btn" href="https://music.yandex.ru/artist/27001615" target="_blank" rel="noopener"><span class="btn-l"><span class="dot" style="background:#ffcc00"></span>Yandex Music</span><span class="arr">↗</span></a>
+      <a class="btn" href="https://soundcloud.com/n3lame" target="_blank" rel="noopener"><span class="btn-l"><span class="dot" style="background:#ff5500"></span>SoundCloud</span><span class="arr">↗</span></a>
+      <a class="btn" href="https://vk.ru/n3lame" target="_blank" rel="noopener"><span class="btn-l"><span class="dot" style="background:#0077ff"></span>VK Music</span><span class="arr">↗</span></a>
+      <a class="btn" href="https://open.spotify.com/artist/3nOzX3m8mmxCSk6kvA9DJM" target="_blank" rel="noopener"><span class="btn-l"><span class="dot" style="background:#1ed760"></span>Spotify</span><span class="arr">↗</span></a>
+      <a class="btn" href="https://www.youtube.com/@n3lame_music" target="_blank" rel="noopener"><span class="btn-l"><span class="dot" style="background:#ff0033"></span>YouTube Music</span><span class="arr">↗</span></a>
+      <a class="btn" href="https://genius.com/artists/N3lame" target="_blank" rel="noopener"><span class="btn-l"><span class="dot" style="background:#ffff64"></span>Genius</span><span class="arr">↗</span></a>
     </div>
 
-    <div class="section-title">Соцсети:</div>
-    <div class="socials-row">
-      <a class="soc-btn" href="https://t.me/n3lame" target="_blank" rel="noopener">Telegram</a>
-      <a class="soc-btn" href="https://vk.ru" target="_blank" rel="noopener">VK Паблик</a>
-      <a class="soc-btn" href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a>
+    <div class="lbl">Соцсети:</div>
+    <div class="soc">
+      <a href="https://t.me/n3lame" target="_blank" rel="noopener">Telegram</a>
+      <a href="https://vk.ru/n3lame" target="_blank" rel="noopener">VK Паблик</a>
+      <a href="https://www.tiktok.com/@n3lame" target="_blank" rel="noopener">TikTok</a>
     </div>
 
-    <div class="contacts">
-      <div class="contact-item">
-        <span>DM -</span>
-        <a href="https://t.me/n3lamee" target="_blank" rel="noopener">@n3lamee</a>
-      </div>
-      <div class="contact-item">
-        <span>Contact:</span>
-        <span class="copy-email" id="copyEmail" title="Нажми, чтобы скопировать">n3lame@gmail.com</span>
-      </div>
+    <div class="foot">
+      <div>DM - <a href="https://t.me/n3lamee" target="_blank" rel="noopener">@n3lamee</a></div>
+      <div>Contact: <span class="mail" id="mail">n3lame@gmail.com</span></div>
     </div>
   </div>
 
   <script>
-    const emailEl = document.getElementById('copyEmail');
-    emailEl.addEventListener('click', () => {
-      navigator.clipboard.writeText('n3lame@gmail.com');
-      const old = emailEl.textContent;
-      emailEl.textContent = 'Скопировано!';
-      setTimeout(() => { emailEl.textContent = old; }, 1500);
-    });
+    const m = document.getElementById('mail');
+    m.onclick = () => { navigator.clipboard.writeText('n3lame@gmail.com'); m.textContent = 'Скопировано!'; setTimeout(() => m.textContent = 'n3lame@gmail.com', 1500); };
+    window.onload = () => { document.getElementById('favicon').href = 'cover.png?v=' + Date.now(); };
   </script>
 </body>
 </html>
