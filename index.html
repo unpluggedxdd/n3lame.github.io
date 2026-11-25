@@ -6,219 +6,344 @@
   <title>n3lame</title>
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Inter:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: #080808;
-      color: #ededed;
-      font-family: 'Space Mono', monospace;
+      background: #09090b;
+      color: #f4f4f5;
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 48px 16px 64px;
-      -webkit-font-smoothing: antialiased;
+      align-items: center;
+      padding: 32px 16px;
+      background-image: radial-gradient(circle at 50% -10%, rgba(120, 119, 198, 0.14), transparent 55%);
     }
 
-    .wrap {
+    .container {
       width: 100%;
       max-width: 440px;
+      background: #111114;
+      border: 1px solid #222228;
+      border-radius: 22px;
+      padding: 28px 22px 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
     }
 
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid #1e1e1e;
-      margin-bottom: 28px;
-    }
-
-    .cover {
-      width: 84px;
-      height: 84px;
-      object-fit: cover;
-      border: 1px solid #2a2a2a;
-      flex-shrink: 0;
-      filter: contrast(1.05);
-    }
-
-    .title-block h1 {
-      font-family: 'Inter', sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      margin-bottom: 6px;
-    }
-
-    .release-tag {
-      font-size: 12px;
-      color: #777;
-    }
-
-    .release-tag span {
-      color: #ededed;
-    }
-
-    .section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #5c5c5c;
-      margin-bottom: 10px;
-    }
-
-    .list {
+    .profile {
       display: flex;
       flex-direction: column;
-      border-top: 1px solid #1e1e1e;
-      margin-bottom: 28px;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 22px;
     }
 
-    .row {
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #2a2a32;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .name-row h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .verified {
+      width: 18px;
+      height: 18px;
+      background: #e4e4e7;
+      color: #09090b;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .bio {
+      font-size: 13px;
+      color: #8e8e98;
+      font-weight: 500;
+    }
+
+    .release-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #18181d;
+      border: 1px solid #2a2a33;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 22px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+
+    .release-card:hover {
+      background: #1e1e24;
+      border-color: #464655;
+      transform: translateY(-1px);
+    }
+
+    .release-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .release-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid #2e2e36;
+    }
+
+    .release-info .tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #a1a1aa;
+      margin-bottom: 2px;
+    }
+
+    .release-info .track {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .release-cta {
+      font-size: 12px;
+      font-weight: 700;
+      background: #ffffff;
+      color: #09090b;
+      padding: 7px 12px;
+      border-radius: 999px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #71717a;
+      margin-bottom: 10px;
+      padding-left: 2px;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+      margin-bottom: 22px;
+    }
+
+    .plat-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #17171c;
+      border: 1px solid #25252d;
+      border-radius: 12px;
+      padding: 12px 13px;
+      text-decoration: none;
+      color: #f4f4f5;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.18s ease;
+    }
+
+    .plat-btn:hover {
+      background: #202027;
+      border-color: #3f3f4c;
+      transform: translateY(-1px);
+    }
+
+    .plat-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-ym { background: #ffcc00; }
+    .dot-sc { background: #ff5500; }
+    .dot-vk { background: #0077ff; }
+    .dot-sp { background: #1ed760; }
+    .dot-yt { background: #ff0033; }
+    .dot-gn { background: #ffff64; }
+
+    .arrow {
+      color: #52525b;
+      font-size: 12px;
+      transition: color 0.18s;
+    }
+    .plat-btn:hover .arrow { color: #d4d4d8; }
+
+    .socials-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .soc-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #17171c;
+      border: 1px solid #25252d;
+      border-radius: 12px;
+      padding: 11px 8px;
+      text-decoration: none;
+      color: #e4e4e7;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.18s ease;
+    }
+
+    .soc-btn:hover {
+      background: #22222a;
+      border-color: #454552;
+      color: #ffffff;
+    }
+
+    .contacts {
+      border-top: 1px solid #1f1f26;
+      padding-top: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 13px 10px;
-      border-bottom: 1px solid #1e1e1e;
-      color: #ededed;
-      text-decoration: none;
-      font-size: 13px;
-      transition: background 0.12s ease, color 0.12s ease;
-    }
-
-    .row:hover {
-      background: #ededed;
-      color: #080808;
-    }
-
-    .row .arrow {
+      flex-wrap: wrap;
+      gap: 10px;
       font-size: 12px;
-      color: #5c5c5c;
-      transition: color 0.12s ease, transform 0.12s ease;
+      color: #71717a;
     }
 
-    .row:hover .arrow {
-      color: #080808;
-      transform: translate(2px, -2px);
-    }
-
-    .footer {
-      padding-top: 8px;
-      font-size: 12px;
-      color: #666;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .footer-line {
+    .contact-item {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
     }
 
-    .footer a, .mail-btn {
-      color: #ededed;
+    .contacts a, .copy-email {
+      color: #d4d4d8;
       text-decoration: none;
-      border-bottom: 1px solid #333;
-      padding-bottom: 1px;
+      font-weight: 600;
       cursor: pointer;
-      transition: border-color 0.15s;
+      transition: color 0.15s;
     }
 
-    .footer a:hover, .mail-btn:hover {
-      border-color: #ededed;
+    .contacts a:hover, .copy-email:hover {
+      color: #ffffff;
     }
 
-    .copied {
-      font-size: 11px;
-      color: #888;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .copied.show {
-      opacity: 1;
+    @media (max-width: 380px) {
+      .platforms-grid { grid-template-columns: 1fr; }
+      .socials-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <header class="header">
-      <img src="cover.png" alt="n3lame — mastermind" class="cover" />
-      <div class="title-block">
+  <div class="container">
+    <div class="profile">
+      <img src="cover.png" alt="n3lame" class="avatar" />
+      <div class="name-row">
         <h1>n3lame</h1>
-        <div class="release-tag">new single: <span>mastermind</span></div>
+        <span class="verified" title="Official Artist">✓</span>
       </div>
-    </header>
+      <div class="bio">artist · sound producer</div>
+    </div>
 
-    <div class="section-label">Слушать меня на всех площадках</div>
-    <nav class="list">
-      <a class="row" href="https://music.yandex.ru/artist/27001615" target="_blank" rel="noopener">
-        <span>Yandex Music</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="row" href="https://soundcloud.com/n3lame" target="_blank" rel="noopener">
-        <span>SoundCloud</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="row" href="https://vk.ru/n3lame" target="_blank" rel="noopener">
-        <span>VK Music</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="row" href="https://open.spotify.com/artist/3nOzX3m8mmxCSk6kvA9DJM" target="_blank" rel="noopener">
-        <span>Spotify</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="row" href="https://www.youtube.com/@n3lame_music" target="_blank" rel="noopener">
-        <span>YouTube Music</span>
-        <span class="arrow">↗</span>
-      </a>
-      <a class="row" href="https://genius.com/artists/N3lame" target="_blank" rel="noopener">
-        <span>Genius</span>
-        <span class="arrow">↗</span>
-      </a>
-    </nav>
+    <a class="release-card" href="https://music.yandex.ru/artist/27001615" target="_blank" rel="noopener">
+      <div class="release-left">
+        <img src="cover.png" alt="mastermind" class="release-thumb" />
+        <div class="release-info">
+          <div class="tag">Новый трек</div>
+          <div class="track">mastermind</div>
+        </div>
+      </div>
+      <div class="release-cta">Слушать</div>
+    </a>
 
-    <div class="section-label">Соцсети</div>
-    <nav class="list">
-      <a class="row" href="https://t.me/n3lame" target="_blank" rel="noopener">
-        <span>Telegram</span>
+    <div class="section-title">Слушать меня на всех площадках:</div>
+    <div class="platforms-grid">
+      <a class="plat-btn" href="https://music.yandex.ru/artist/27001615" target="_blank" rel="noopener">
+        <span class="plat-left"><span class="dot dot-ym"></span>Yandex Music</span>
         <span class="arrow">↗</span>
       </a>
-      <a class="row" href="https://vk.ru/n3lame" target="_blank" rel="noopener">
-        <span>VK Паблик</span>
+      <a class="plat-btn" href="https://soundcloud.com/n3lame" target="_blank" rel="noopener">
+        <span class="plat-left"><span class="dot dot-sc"></span>SoundCloud</span>
         <span class="arrow">↗</span>
       </a>
-      <a class="row" href="https://www.tiktok.com/@n3lame" target="_blank" rel="noopener">
-        <span>TikTok</span>
+      <a class="plat-btn" href="https://vk.ru/artist/n3lame" target="_blank" rel="noopener">
+        <span class="plat-left"><span class="dot dot-vk"></span>VK Music</span>
         <span class="arrow">↗</span>
       </a>
-    </nav>
+      <a class="plat-btn" href="https://open.spotify.com/artist/3nOzX3m8mmxCSk6kvA9DJM" target="_blank" rel="noopener">
+        <span class="plat-left"><span class="dot dot-sp"></span>Spotify</span>
+        <span class="arrow">↗</span>
+      </a>
+      <a class="plat-btn" href="https://www.youtube.com/@n3lame_music" target="_blank" rel="noopener">
+        <span class="plat-left"><span class="dot dot-yt"></span>YouTube Music</span>
+        <span class="arrow">↗</span>
+      </a>
+      <a class="plat-btn" href="https://genius.com/artists/N3lame" target="_blank" rel="noopener">
+        <span class="plat-left"><span class="dot dot-gn"></span>Genius</span>
+        <span class="arrow">↗</span>
+      </a>
+    </div>
 
-    <footer class="footer">
-      <div class="footer-line">
-        <span>DM —</span>
+    <div class="section-title">Соцсети:</div>
+    <div class="socials-row">
+      <a class="soc-btn" href="https://t.me/n3lame" target="_blank" rel="noopener">Telegram</a>
+      <a class="soc-btn" href="https://vk.ru/n3lame" target="_blank" rel="noopener">VK Паблик</a>
+      <a class="soc-btn" href="https://www.tiktok.com/@n3lame" target="_blank" rel="noopener">TikTok</a>
+    </div>
+
+    <div class="contacts">
+      <div class="contact-item">
+        <span>DM -</span>
         <a href="https://t.me" target="_blank" rel="noopener">@n3lamee</a>
       </div>
-      <div class="footer-line">
+      <div class="contact-item">
         <span>Contact:</span>
-        <span class="mail-btn" id="mailCopy">n3lame@gmail.com</span>
-        <span class="copied" id="copiedMsg">[ скопировано ]</span>
+        <span class="copy-email" id="copyEmail" title="Нажми, чтобы скопировать">n3lame@gmail.com</span>
       </div>
-    </footer>
-  </main>
+    </div>
+  </div>
 
   <script>
-    const mailBtn = document.getElementById('mailCopy');
-    const copiedMsg = document.getElementById('copiedMsg');
-    mailBtn.addEventListener('click', () => {
+    const emailEl = document.getElementById('copyEmail');
+    emailEl.addEventListener('click', () => {
       navigator.clipboard.writeText('n3lame@gmail.com');
-      copiedMsg.classList.add('show');
-      setTimeout(() => copiedMsg.classList.remove('show'), 1800);
+      const old = emailEl.textContent;
+      emailEl.textContent = 'Скопировано!';
+      setTimeout(() => { emailEl.textContent = old; }, 1500);
     });
   </script>
 </body>
